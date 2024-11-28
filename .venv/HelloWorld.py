@@ -1,6 +1,8 @@
 #importo le dipendenze, jsonify serve per avere ritorno in json
 from flask import Flask, request, jsonify
 
+import mysql.connector
+
 #creazione di un applicativo Flask
 app = Flask(__name__)
 
@@ -8,7 +10,28 @@ app = Flask(__name__)
 #importante che "app" sia il nome del Flask server creato sopra, tra virgolette ho il path
 @app.route("/")
 def home():
-    return "Home"
+    mydb = mysql.connector.connect(
+    host="127.0.0.1",      # Indirizzo IP
+    port=3307,             # Porta
+    user="ITS_2024",       # Nome utente
+    password="gabrielli",           # Inserisci la password corretta
+    database="its_2024"            # Specifica il nome del database, se necessario
+    )
+
+    # Esegui una query per recuperare i dati
+    #cursor sarebbe un'interfaccia per eseguire comandi SQL e vederne i risultati
+    cursor = mydb.cursor(dictionary=True)  # dictionary=True per ottenere i risultati come dizionari altrimenti con =False diventano delle tuple
+    cursor.execute("SELECT * FROM favourite_data")  # Cambia "utenti" con il nome della tua tabella
+    result = cursor.fetchall()  # Ottieni tutti i risultati
+        
+    # Chiudi la connessione
+    cursor.close()
+    mydb.close()
+        
+    # Ritorna i dati come JSON
+    return jsonify(result)
+
+
 
 #creazione metodo HTTP get
 #tra <> passo un dato tramite url tipo il numero di user da raggiungere nel db
