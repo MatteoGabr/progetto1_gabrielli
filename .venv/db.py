@@ -17,7 +17,7 @@ events = [
 
 # Parametri di simulazione
 start_time = datetime.now()  # Inizia al momento dell'esecuzione
-duration_minutes = 2  # Durata della simulazione in minuti
+duration_minutes = 250  # Durata della simulazione in minuti
 
 try:
     connection = mysql.connector.connect(
@@ -62,8 +62,8 @@ try:
             print(f"Inseriti record per il minuto: {current_time.strftime('%Y-%m-%d %H:%M:%S')}")
             
             # Incrementa il tempo di un minuto e attende
-            current_time += timedelta(minutes=1)
-            time.sleep(60)  # Aspetta un minuto reale prima di ripetere il ciclo
+            current_time += timedelta(minutes=45)
+            time.sleep(0.5)  # Aspetta un minuto reale prima di ripetere il ciclo
         
 except Error as e:
     print(f"Errore durante la connessione a MySQL: {e}")
